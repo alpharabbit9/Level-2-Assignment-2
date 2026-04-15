@@ -1,11 +1,13 @@
 import { Pool } from 'pg';
 import { config } from './env';
 
+if (!config.db.connectionString) {
+  console.warn('WARNING: DATABASE_URL is missing. DB queries will fail.');
+}
+
 const pool = new Pool({
   connectionString: config.db.connectionString,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  ssl: config.db.connectionString?.includes('localhost') ? false : { rejectUnauthorized: false }
 });
 
 pool.on('error', (err, client) => {

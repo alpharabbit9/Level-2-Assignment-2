@@ -11,7 +11,7 @@ import { initDb, query } from './config/db';
 const app: Application = express();
 
 // Initialize DB for serverless if not already done
-initDb().catch(err => console.error('DB Init Error:', err));
+// initDb().catch(err => console.error('DB Init Error:', err));
 
 // Middlewares
 app.use(cors());
