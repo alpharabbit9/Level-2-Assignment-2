@@ -10,20 +10,6 @@ import { initDb, query } from './config/db';
 
 const app: Application = express();
 
-// Initialize DB for serverless if not already done
-let isDbInitialized = false;
-app.use(async (req, res, next) => {
-  if (!isDbInitialized) {
-    try {
-      await initDb();
-      isDbInitialized = true;
-    } catch (err) {
-      console.error('Initial DB Setup Error:', err);
-    }
-  }
-  next();
-});
-
 // Middlewares
 app.use(cors());
 app.use(express.json());
