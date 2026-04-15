@@ -3,6 +3,9 @@ import { config } from './env';
 
 const pool = new Pool({
   connectionString: config.db.connectionString,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 pool.on('error', (err, client) => {
