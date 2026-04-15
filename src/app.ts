@@ -6,8 +6,12 @@ import { vehiclesRoutes } from './modules/vehicles/vehicles.route';
 import { bookingsRoutes } from './modules/bookings/bookings.route';
 import { globalErrorHandler } from './middlewares/globalErrorHandler';
 import { AppError } from './utils/AppError';
+import { initDb } from './config/db';
 
 const app: Application = express();
+
+// Initialize DB for serverless if not already done
+initDb().catch(err => console.error('DB Init Error:', err));
 
 // Middlewares
 app.use(cors());
