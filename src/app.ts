@@ -6,7 +6,7 @@ import { vehiclesRoutes } from './modules/vehicles/vehicles.route';
 import { bookingsRoutes } from './modules/bookings/bookings.route';
 import { globalErrorHandler } from './middlewares/globalErrorHandler';
 import { AppError } from './utils/AppError';
-import { initDb } from './config/db';
+import { initDb, query } from './config/db';
 
 const app: Application = express();
 
@@ -22,6 +22,16 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', usersRoutes);
 app.use('/api/v1/vehicles', vehiclesRoutes);
 app.use('/api/v1/bookings', bookingsRoutes);
+
+// Health check endpoint
+app.get('/api/v1/health', async (req: Request, res: Response) => {
+  try {
+    const { rows } = await query('SELECT NOW()');
+    res.json({ success: true, message: 'API and DB are healthy', time: rows[0].now });
+  } catch (err: any) {
+    res.status(500).json({ success: false, message: 'DB Connection failed', error: err.message });
+  }
+});
 
 // Root route
 app.get('/', (req: Request, res: Response) => {
